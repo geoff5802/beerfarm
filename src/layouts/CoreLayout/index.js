@@ -1,19 +1,21 @@
 const React = require('react');
 const Header = require('../../components/Header');
 const Classes = require('./styles.scss');
+const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default;
 
 // Pull global styles
 require('../../styles/core.scss');
 
 const CoreLayout = ({ children }) => (
 
-    <div className="container text-center">
-        <Header />
-        <div className={Classes.mainContainer}>
-            {children}
+    <MuiThemeProvider>
+        <div className="container text-center">
+            <Header />
+            <div className={Classes.mainContainer}>
+                {children}
+            </div>
         </div>
-    </div>
-
+    </ MuiThemeProvider>
 );
 
 CoreLayout.propTypes = {

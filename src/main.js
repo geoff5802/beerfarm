@@ -5,6 +5,9 @@ const CreateStore = require('./wiring/create-store');
 const History = require('./wiring/history');
 const AppContainer = require('./containers/App');
 
+const InjectTapEventPlugin = require('react-tap-event-plugin');
+InjectTapEventPlugin();
+
 // Create redux store and sync history with react-router-redux
 
 const initialState = window.__INITIAL_STATE__;

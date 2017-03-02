@@ -13,8 +13,11 @@ const styles = {
 module.exports = class extends StrangeForm(React.Component) {
 
     static propTypes = {
-        numBeers: React.PropTypes.number.isRequired,
-        beerStyle: React.PropTypes.number.isRequired
+        numBeers: React.PropTypes.string.isRequired,
+        beerStyle: React.PropTypes.number.isRequired,
+        updateFieldAction: React.PropTypes.func.isRequired,
+        getBeerStyles: React.PropTypes.func.isRequired,
+        beerStyleList: React.PropTypes.array
     }
 
     constructor(props) {
@@ -36,7 +39,12 @@ module.exports = class extends StrangeForm(React.Component) {
             getFormValue: this.getFormValue.bind(this)
         });
     }
-    
+
+    componentWillMount() {
+
+      this.props.getBeerStyles();
+    }
+
     getFormValue(e) {
 
         // Just an example of a custom handler that applies a default.
@@ -60,8 +68,19 @@ module.exports = class extends StrangeForm(React.Component) {
             return this.fieldError(field);
         });
     }
+    
+    handleStyleChange = (index, value) => {
+
+        /* 
+        calling this through onChange={this.proposeNew('beerStyle')}
+        was failing, couldn't find the value
+        */
+        this.act('beerStyle',value);
+    }
 
     render() {
+
+        const { beerStyleList } = this.props;
 
         return <div>
 
@@ -72,22 +91,24 @@ module.exports = class extends StrangeForm(React.Component) {
                 hintText="Hint Text"
                 // Reflects in local component state.
                 value={this.fieldValue('numBeers')}
+                type='number'
                 floatingLabelText="Just round to the nearest beer"
                 // Updates local component state and calls act, all using getFormValue option.
                 onChange={this.proposeNew('numBeers')}
             />
-            
+            <h2>What beer style do you typically drink?</h2>
             <DropDownMenu
                 value={this.fieldValue('beerStyle')}
-                onChange={this.proposeNew('beerStyle')}
+                onChange={this.handleStyleChange}
                 style={styles.customWidth}
                 autoWidth={false}
             >
-                <MenuItem value={1} primaryText="Select Style" />
-                <MenuItem value={2} primaryText="IPA" />
-                <MenuItem value={3} primaryText="Belgian Whit" />
-                <MenuItem value={4} primaryText="Porter" />
-                <MenuItem value={5} primaryText="Stout" />
+                {beerStyleList.hopsByStyle.map((beerStyle, i) => {
+
+                    return (
+                        <MenuItem value={i} label={beerStyle.style} primaryText={beerStyle.style} />
+                    );
+                })}
             </DropDownMenu>
         </div>;
     }

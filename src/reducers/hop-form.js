@@ -1,10 +1,10 @@
-const ActionTypes = require('../action-types/beer-math');
+const ActionTypes = require('../action-types/hop-form');
 const Deeply = require('../utils/deeply');
 
 const internals =  {
     initial: () => ({
         numBeers: '500',
-        beerStyle: '0'
+        beerStyle: 0
     })
 };
 
@@ -14,11 +14,38 @@ module.exports = (state, action) => {
 
     switch (action.type) {
 
-        case ActionTypes.CACULATE_HOP_FARM_SUCCESS:
+        case ActionTypes.UPDATE_BEER_QUANTITY_BEGIN:
 
-        return Deeply(state)
+            const numBeers = action.payload;
 
-          .set('numBeers', 'testval')
+            var rx = new RegExp(/^\d+$/);
+
+            if (!rx.test(numBeers)){
+                // input is not a whole number
+                // don't change app state with new input
+                return state;
+            }
+            
+            return Deeply(state)
+
+              .set('numBeers', numBeers)
+              .value();
+          
+        case ActionTypes.UPDATE_BEER_STYLE_BEGIN:
+
+            const beerStyle = action.payload;
+
+            return Deeply(state)
+
+              .set('beerStyle', beerStyle)
+              .value();
+              
+        case ActionTypes.GET_BEER_STYLES:
+
+          const beerStyles = action.payload;
+
+          return Deeply(state)
+          .set('beerStyleList', beerStyles)
           .value();
     }
 

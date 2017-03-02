@@ -7,7 +7,7 @@ const internals = {};
 internals.connect = Connect(
     (state) => ({
     }),{
-        calculateHopFarm: BeerFarm.calculateHopFarm
+        calculateHopFarm: BeerMath.calculateHopFarm
     }
 );
 

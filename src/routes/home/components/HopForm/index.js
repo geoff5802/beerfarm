@@ -17,7 +17,7 @@ module.exports = class extends StrangeForm(React.Component) {
         beerStyle: React.PropTypes.number.isRequired,
         updateFieldAction: React.PropTypes.func.isRequired,
         getBeerStyles: React.PropTypes.func.isRequired,
-        beerStyleList: React.PropTypes.array
+        beerStyleList: React.PropTypes.object
     }
 
     constructor(props) {
@@ -75,12 +75,18 @@ module.exports = class extends StrangeForm(React.Component) {
         calling this through onChange={this.proposeNew('beerStyle')}
         was failing, couldn't find the value
         */
+
         this.act('beerStyle',value);
     }
 
     render() {
 
         const { beerStyleList } = this.props;
+
+        // TODO: find a better way to defend against this
+        if(Object.keys(beerStyleList).length === 0){
+          return <div />;
+        }
 
         return <div>
 
@@ -103,10 +109,10 @@ module.exports = class extends StrangeForm(React.Component) {
                 style={styles.customWidth}
                 autoWidth={false}
             >
-                {beerStyleList.hopsByStyle.map((beerStyle, i) => {
+                {Object.keys(beerStyleList.hopsByStyle).map((beerStyle, i) => {
 
                     return (
-                        <MenuItem value={i} label={beerStyle.style} primaryText={beerStyle.style} />
+                        <MenuItem key={i} value={i} label={beerStyleList.hopsByStyle[beerStyle].style} primaryText={beerStyleList.hopsByStyle[beerStyle].style} />
                     );
                 })}
             </DropDownMenu>

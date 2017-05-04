@@ -4,7 +4,8 @@ const Deeply = require('../utils/deeply');
 const internals =  {
     initial: () => ({
         numBeers: '500',
-        beerStyle: 0
+        beerStyle: 0,
+        beerStyleList: {}
     })
 };
 
